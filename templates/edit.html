@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Edit Tweet</title>
+</head>
+<body>    
+    <div class="container">
+        <nav class="navbar navbar-light bg-light">
+            <span class="navbar-text">
+                Dojo Tweets
+            </span>
+            <span class="navbar-text">
+                Welcome, {{session['name']}}
+            </span>
+            <form action="/logout" method="POST">
+                <input type="submit" value="logout">
+            </form>
+        </nav>
+        <h1>Edit Tweet:</h1>
+        {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <h3>{{message}}</h3>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        <form action="/tweets/{{edit.id}}/update" method="POST">            
+            <div class="form-group">
+              <label for="exampleFormControlTextarea1">Update your tweet:</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" name="updated_tweet" rows="3">
+                 {{edit.tweet}}
+              </textarea>
+            </div>
+            <input type="submit" value="Update">
+        </form>
+        <a href="/dashboard"><input type="submit" value="Cancel"></a>
+    </div>
+</body>
+</html>

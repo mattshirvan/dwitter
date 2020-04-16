@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Dojo Tweets</title>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-light bg-light">
+            <span class="navbar-text">
+                Dojo Tweets
+            </span>
+            <span class="navbar-text">
+                <a href="/users">Users</a>
+            </span>
+            <span class="navbar-text">
+                Welcome, {{session['name']}}
+            </span>
+            <form action="/logout" method="POST">
+                <input type="submit" value="logout">
+            </form>
+        </nav>
+        <h1>Write a Tweet:</h1>
+        {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <h3>{{message}}</h3>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        <form action="/tweet" method="POST">
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Your tweet here...</label>
+                <textarea class="form-control" name="tweet" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <hr>
+        <h1>Your Feed:</h1>
+            {% for tweety in tweets %} 
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title">{{tweety.user.first_name}} says:</h5>
+                  <p class="card-text">{{tweety['tweet']}}</p>  
+                  <form action="/tweets/{{ tweety.id }}/delete" method="POST">
+                    <input type="hidden" name="tweet_id" value="{{tweety.id}}">
+                    <input type="submit" value="Delete">
+                  </form>
+                  <form action="/tweets/{{ tweety.id }}/add_like" method="POST">
+                    <input type="hidden" name="tweet_id" value="{{tweety.id}}">
+                    <input type="submit" value="Like">
+                  </form> 
+                  <a href="/tweets/{{ tweety.id }}/edit"><input type="button" value="Edit"></a>                 
+                </div>
+              </div>
+            {% endfor %}
+        <div>
+        </div>
+    </div>
+</body>
+</html>
